@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Analisis Risiko Bencana Gempa Bumi di Kota Palu</title>
+		<link rel="stylesheet" type="text/css" href="css\style_tentang.css">
+		<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+		<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+
+        <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+	</head>
+	<body>
+		
+		<!-- sidebar -->
+		<input type="checkbox" id="check">
+		<div class="sidebar">
+			<ul style="padding-left: 0px;">
+				<li><a href="../../Halaman Awal.html">Beranda</a></li>
+				<li><a href="">Peta</a>
+					<div class="sub-menu-1">
+						<ul style="padding-left: 0px;">
+							<li><a href="../Risiko/Halaman Peta_Risiko_Bencana.html">Peta Risiko</a></li>
+							<li><a href="../Bahaya/Halaman Peta_Bahaya.html">Informasi Data</a></li>
+						</ul>
+					</div>
+				</li>
+				<li><a href="Halaman Tentang.html">Tentang</a></li>
+				<li><a href="Halaman Kontak.html">Kontak</a></li>
+			</ul>
+		</div>
+
+		<!-- untuk bagian header -->
+		<header>
+			<div class="container"></div>
+				<h1>WEBGIS RISIKO BENCANA GEMPA BUMI </h1>
+				<ul>
+					<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap" rel="stylesheet">
+					<li><a href="../../Halaman Awal.html">Beranda</a></li>
+					<li><a href="">Peta</a>
+						<div class="sub-menu-1">
+							<ul style="padding-left: 0px; width: 200px">
+								<li><a href="../Risiko/Halaman Peta_Risiko_Bencana.html">Peta Risiko</a></li>
+								<li><a href="../Bahaya/Halaman Peta_Bahaya.html">Informasi Data</a></li>
+							</ul>
+						</div>
+					</li>
+					<li><a style="font-weight: bold;" href="Halaman Tentang.html">Tentang</a></li>
+					<li><a href="Halaman Kontak.html">Kontak</a></li>
+				</ul>
+
+				<!-- menu mobile -->
+				<label for="check" class="mobile-menu"><i class="fas fa-bars fa-2x"></i></label>
+			</div>
+		</header>
+
+		<!--home/ selamat datang -->
+		<section class="home">
+			<div class="container">
+				<h2>TENTANG</h2>
+				<h4>Deskripsi</h4>
+				<p>WebGIS atau Sistem Informasi Geografis Berbasis WEB ini merupakan hasil skripsi dengan judul "VISUALISASI HASIL ANALISIS RISIKO BENCANA GEMPA BUMI UNTUK MITIGASI BENCANA MENGGUNAKAN SISTEM INFORMASI GEOGRAFIS BERBASIS WEB 
+				(Studi Kasus : Kota Palu, Sulawesi Tengah)" yang disusun oleh Gabriella Trisna Yudhanti untuk memenuhi salah satu persyaratan kelulusan pada jenjang Sarjana Teknik Program Studi Teknik Geodesi di Universitas Gadjah Mada. WebGIS ini berisi informasi baik spasial maupun deskritif mengenai analisis risiko bencana gempa bumi di Kota Palu, Sulawesi Tengah. Analisis tersebut merupakan hasil pengolahan data bahaya, kerentanan, dan kapasitas bencana di Kota Palu yang diambil dari berbagai sumber. Analisis ini dilaksanakan berdasarkan Peraturan Kepala Badan Nasional Penanggulangan Bencana Nomor. 02 Tahun 2012 tentang Pedoman Umum Pengkajian Risiko Bencana. </p>
+				<h4>Tujuan</h4>
+				<p>Memberikan informasi analisis dan visualisasi terhadap ancaman bahaya (hazard), kerentanan (vulnerability), kapasitas (capability), dan risiko (risk) yang diakibatkan oleh bencana gempa bumi di Kota Palu, Sulawesi Tengah yang divisualisasikan di dalam SIG berbasis Web secara interaktif. </p>
+				<h4>Sumber Data</h4>
+				<p>1.	Data PGA (Peak Ground Acceleration) map pada bencana gempa bumi tanggal 28 September 2018 dengan format shapefile dari USGS (The United States Geological Survey).</p>
+				<p>2.	Data tabular Kecamatan dan Kabupaten/Kota dalam Angka 2020 dengan format pdf dari BPS Kota Palu (diunduh melalui https://palukota.bps.go.id/).</p>
+				<p>3.	Data tabular Indeks Pembangunan Manusia dengan format pdf dari BPS Kota Palu (diunduh melalui https://palukota.bps.go.id/).</p>
+				<p>4.	Data tabular Banyaknya Penderita Cacat menurut Kecamatan di Kota Palu tahun 2016 (diunduh melalui https://palukota.bps.go.id/).</p>
+				<p>5.	Data Bangunan di Kota Palu dengan format shapefile dari Open Street Map (diunduh melalui https://export.hotosm.org/).</p>
+				<p>6.	Data Batas Administrasi Desa di Kota Palu dengan format shapefile dari Badan Informasi Geospasial.</p>
+				<p>7.	Data Penggunaan Lahan Tahun 2017 di Kota Palu dengan format shapefile dari Ina-Geoportal Data Kebencanaan (diunduh melalui https://tanahair.indonesia.go.id/portal-web/bencana/index.html).</p>
+				<p>8.	Data Kondisi Bangunan Rumah Bencana Alam Gempa Bumi, Tsunami, dan Likuifaksi di Kota Palu Tahun 2018 (diunduh melalui http://bappeda.palukota.go.id/).</p>
+				<p>9.	Peraturan Kepala Badan Nasional Penanggulangan Bencana Nomor. 02 Tahun 2012 tentang Pedoman Umum Pengkajian Risiko Bencana.</p>
+			</div>
+		</section>
+
+		<section style="padding:0;">
+    		<div class="bawah" style="padding:0;">
+    			<h5>
+    				© WEBGIS Risiko Bencana Gempa Bumi Kota Palu
+    			</h5>
+    			<h5> Gabriella Trisna Yudhanti | Email: gabriellatrisna@mail.ugm.ac.id </h5>
+    		</div>
+    	</section>
+	</body>
+
+</html>

@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-search.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Analisis Risiko Bencana Gempa Bumi di Kota Palu</title>
+		<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+	</head>
+	<body>
+		
+		<!-- sidebar -->
+		<input type="checkbox" id="check">
+		<div class="sidebar">
+			<ul style="padding-left: 0px">
+				<li><a href="../../Halaman Awal.html">Beranda</a></li>
+				<li><a href="">Peta</a>
+					<div class="sub-menu-1">
+						<ul style="padding-left: 0px">
+							<li><a href="../Risiko/Halaman Peta_Risiko_Bencana.html">Peta Risiko</a></li>
+							<li><a href="../Bahaya/Halaman Peta_Bahaya.html">Informasi Data</a></li>
+						</ul>
+					</div>
+				</li>
+				<li><a href="../Halaman/Halaman Tentang.html">Tentang</a></li>
+				<li><a href="../Halaman/Halaman Kontak.html">Kontak</a></li>
+			</ul>
+		</div>
+
+		<!-- untuk bagian header -->
+		<header>
+			<div class="container"></div>
+				<h1>WEBGIS RISIKO BENCANA GEMPA BUMI </h1>
+				<ul>
+					<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap" rel="stylesheet">
+					<li><a href="../../Halaman Awal.html">Beranda</a></li>
+					<li><a style="font-weight: bold;" href="">Peta</a>
+						<div class="sub-menu-1">
+							<ul style="padding-left: 0px; width: 200px">
+								<li><a href="../Risiko/Halaman Peta_Risiko_Bencana.html">Peta Risiko</a></li>
+								<li><a href="../Bahaya/Halaman Peta_Bahaya.html">Informasi Data</a></li>
+							</ul>
+						</div>
+					</li>
+					<li><a href="../Halaman/Halaman Tentang.html">Tentang</a></li>
+					<li><a href="../Halaman/Halaman Kontak.html">Kontak</a></li>
+				</ul>
+
+				<!-- menu mobile -->
+				<label for="check" class="mobile-menu"><i class="fas fa-bars fa-2x"></i></label>
+			</div>
+		</header>
+	<div class="mappage">
+		<div id="layout" style="background-color: #f2edd7;">
+			<h3>Bahaya</h3>
+			<ul><a href="../Bahaya/Halaman Peta_Bahaya.html">Bahaya/Ancaman</a></ul>
+			<h3>Kerentanan</h3>
+			<ul><a href="../Kerentanan Sosial/Halaman Peta_Kerentanan_Sosial.html">Kerentanan Sosial</a>
+			</ul>
+			<ul><a style="color: #FF6D4D;" href="../Kerentanan Fisik/Halaman Peta_Kerentanan_Fisik.html">Kerentanan Fisik</a>
+			</ul>
+			<ul><a href="../Kerentanan Ekonomi/Halaman Peta_Kerentanan_Ekonomi.html">Kerentanan Ekonomi</a>
+			</ul>
+			<h3>Kapasitas</h3>
+			<ul><a href="../Kapasitas/Halaman Peta_Kapasitas.html">Indeks Kapasitas</a></ul>
+		</div>
+        <div id="map" style="height: 600px; margin-left:0;margin-right:0;"></div>
+        	<script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-search.js"></script>
+        <script src="data/BatasAdministrasiKota_1.js"></script>
+        <script src="data/BatasAdministrasiKecamatan_2.js"></script>
+        <script src="data/BatasAdministrasiDesa_3.js"></script>
+        <script src="data/FasilitasUmum_4.js"></script>
+        <script src="data/JumlahBangunan_5.js"></script>
+        <script src="data/FasilitasKritis_6.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[-0.9549763250231444,119.67998775347196],[-0.6437022216732566,120.12353354959394]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_OSMStandard_0');
+        map.getPane('pane_OSMStandard_0').style.zIndex = 400;
+        var layer_OSMStandard_0 = L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            pane: 'pane_OSMStandard_0',
+            opacity: 1.0,
+            attribution: '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors, CC-BY-SA</a>',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_OSMStandard_0;
+        map.addLayer(layer_OSMStandard_0);
+        function pop_BatasAdministrasiKota_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>Kota</strong><br />' + (feature.properties['WADMKK'] !== null ? autolinker.link(feature.properties['WADMKK'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Provinsi</strong><br />' + (feature.properties['WADMPR'] !== null ? autolinker.link(feature.properties['WADMPR'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_BatasAdministrasiKota_1_0() {
+            return {
+                pane: 'pane_BatasAdministrasiKota_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(145,82,45,0.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_BatasAdministrasiKota_1');
+        map.getPane('pane_BatasAdministrasiKota_1').style.zIndex = 401;
+        map.getPane('pane_BatasAdministrasiKota_1').style['mix-blend-mode'] = 'normal';
+        var layer_BatasAdministrasiKota_1 = new L.geoJson(json_BatasAdministrasiKota_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_BatasAdministrasiKota_1',
+            layerName: 'layer_BatasAdministrasiKota_1',
+            pane: 'pane_BatasAdministrasiKota_1',
+            onEachFeature: pop_BatasAdministrasiKota_1,
+            style: style_BatasAdministrasiKota_1_0,
+        });
+        bounds_group.addLayer(layer_BatasAdministrasiKota_1);
+        map.addLayer(layer_BatasAdministrasiKota_1);
+        function pop_BatasAdministrasiKecamatan_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>Kecamatan</strong><br />' + (feature.properties['WADMKC'] !== null ? autolinker.link(feature.properties['WADMKC'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Kota</strong><br />' + (feature.properties['WADMKK'] !== null ? autolinker.link(feature.properties['WADMKK'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Provinsi</strong><br />' + (feature.properties['WADMPR'] !== null ? autolinker.link(feature.properties['WADMPR'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_BatasAdministrasiKecamatan_2_0() {
+            return {
+                pane: 'pane_BatasAdministrasiKecamatan_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(190,178,151,0.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_BatasAdministrasiKecamatan_2');
+        map.getPane('pane_BatasAdministrasiKecamatan_2').style.zIndex = 402;
+        map.getPane('pane_BatasAdministrasiKecamatan_2').style['mix-blend-mode'] = 'normal';
+        var layer_BatasAdministrasiKecamatan_2 = new L.geoJson(json_BatasAdministrasiKecamatan_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_BatasAdministrasiKecamatan_2',
+            layerName: 'layer_BatasAdministrasiKecamatan_2',
+            pane: 'pane_BatasAdministrasiKecamatan_2',
+            onEachFeature: pop_BatasAdministrasiKecamatan_2,
+            style: style_BatasAdministrasiKecamatan_2_0,
+        });
+        bounds_group.addLayer(layer_BatasAdministrasiKecamatan_2);
+        map.addLayer(layer_BatasAdministrasiKecamatan_2);
+        function pop_BatasAdministrasiDesa_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>Kecamatan</strong><br />' + (feature.properties['WADMKC'] !== null ? autolinker.link(feature.properties['WADMKC'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Desa</strong><br />' + (feature.properties['WADMKD'] !== null ? autolinker.link(feature.properties['WADMKD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Kota</strong><br />' + (feature.properties['WADMKK'] !== null ? autolinker.link(feature.properties['WADMKK'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Provinsi</strong><br />' + (feature.properties['WADMPR'] !== null ? autolinker.link(feature.properties['WADMPR'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_BatasAdministrasiDesa_3_0() {
+            return {
+                pane: 'pane_BatasAdministrasiDesa_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(196,60,57,0.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_BatasAdministrasiDesa_3');
+        map.getPane('pane_BatasAdministrasiDesa_3').style.zIndex = 403;
+        map.getPane('pane_BatasAdministrasiDesa_3').style['mix-blend-mode'] = 'normal';
+        var layer_BatasAdministrasiDesa_3 = new L.geoJson(json_BatasAdministrasiDesa_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_BatasAdministrasiDesa_3',
+            layerName: 'layer_BatasAdministrasiDesa_3',
+            pane: 'pane_BatasAdministrasiDesa_3',
+            onEachFeature: pop_BatasAdministrasiDesa_3,
+            style: style_BatasAdministrasiDesa_3_0,
+        });
+        bounds_group.addLayer(layer_BatasAdministrasiDesa_3);
+        map.addLayer(layer_BatasAdministrasiDesa_3);
+        function pop_FasilitasUmum_4(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>Desa</strong><br />' + (feature.properties['WADMKD'] !== null ? autolinker.link(feature.properties['WADMKD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Kecamatan</strong><br />' + (feature.properties['WADMKC'] !== null ? autolinker.link(feature.properties['WADMKC'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Kota</strong><br />' + (feature.properties['WADMKK'] !== null ? autolinker.link(feature.properties['WADMKK'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Provinsi</strong><br />' + (feature.properties['WADMPR'] !== null ? autolinker.link(feature.properties['WADMPR'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Jumlah Sekolah</strong><br />' + (feature.properties['JML_SKL'] !== null ? autolinker.link(feature.properties['JML_SKL'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Jumlah Tempat Ibadah</strong><br />' + (feature.properties['JML_IBDH'] !== null ? autolinker.link(feature.properties['JML_IBDH'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Jumlah Fasilitas Umum</strong><br />' + (feature.properties['JML_FASUM'] !== null ? autolinker.link(feature.properties['JML_FASUM'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Kelas</strong><br />' + (feature.properties['Kelas'] !== null ? autolinker.link(feature.properties['Kelas'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Skor Indeks</strong><br />' + (feature.properties['Skor'] !== null ? autolinker.link(feature.properties['Skor'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Keterangan</strong><br />' + (feature.properties['Ket'] !== null ? autolinker.link(feature.properties['Ket'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_FasilitasUmum_4_0(feature) {
+            switch(String(feature.properties['Kelas'])) {
+                case 'Rendah':
+                    return {
+                pane: 'pane_FasilitasUmum_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(146,201,83,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Sedang':
+                    return {
+                pane: 'pane_FasilitasUmum_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(242,235,23,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Tinggi':
+                    return {
+                pane: 'pane_FasilitasUmum_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(238,31,35,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_FasilitasUmum_4');
+        map.getPane('pane_FasilitasUmum_4').style.zIndex = 404;
+        map.getPane('pane_FasilitasUmum_4').style['mix-blend-mode'] = 'normal';
+        var layer_FasilitasUmum_4 = new L.geoJson(json_FasilitasUmum_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_FasilitasUmum_4',
+            layerName: 'layer_FasilitasUmum_4',
+            pane: 'pane_FasilitasUmum_4',
+            onEachFeature: pop_FasilitasUmum_4,
+            style: style_FasilitasUmum_4_0,
+        });
+        bounds_group.addLayer(layer_FasilitasUmum_4);
+        map.addLayer(layer_FasilitasUmum_4);
+        function pop_JumlahBangunan_5(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>Desa</strong><br />' + (feature.properties['WADMKD'] !== null ? autolinker.link(feature.properties['WADMKD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Kecamatan</strong><br />' + (feature.properties['WADMKC'] !== null ? autolinker.link(feature.properties['WADMKC'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Kota</strong><br />' + (feature.properties['WADMKK'] !== null ? autolinker.link(feature.properties['WADMKK'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Provinsi</strong><br />' + (feature.properties['WADMPR'] !== null ? autolinker.link(feature.properties['WADMPR'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Kelas</strong><br />' + (feature.properties['Kelas'] !== null ? autolinker.link(feature.properties['Kelas'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Skor Indeks</strong><br />' + (feature.properties['Skor'] !== null ? autolinker.link(feature.properties['Skor'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Keterangan</strong><br />' + (feature.properties['Ket'] !== null ? autolinker.link(feature.properties['Ket'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_JumlahBangunan_5_0(feature) {
+            switch(String(feature.properties['Kelas'])) {
+                case 'Rendah':
+                    return {
+                pane: 'pane_JumlahBangunan_5',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(146,201,83,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Sedang':
+                    return {
+                pane: 'pane_JumlahBangunan_5',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(242,235,23,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Tinggi':
+                    return {
+                pane: 'pane_JumlahBangunan_5',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(238,31,35,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_JumlahBangunan_5');
+        map.getPane('pane_JumlahBangunan_5').style.zIndex = 405;
+        map.getPane('pane_JumlahBangunan_5').style['mix-blend-mode'] = 'normal';
+        var layer_JumlahBangunan_5 = new L.geoJson(json_JumlahBangunan_5, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_JumlahBangunan_5',
+            layerName: 'layer_JumlahBangunan_5',
+            pane: 'pane_JumlahBangunan_5',
+            onEachFeature: pop_JumlahBangunan_5,
+            style: style_JumlahBangunan_5_0,
+        });
+        bounds_group.addLayer(layer_JumlahBangunan_5);
+        map.addLayer(layer_JumlahBangunan_5);
+        function pop_FasilitasKritis_6(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>Desa</strong><br />' + (feature.properties['WADMKD'] !== null ? autolinker.link(feature.properties['WADMKD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Kecamatan</strong><br />' + (feature.properties['WADMKC'] !== null ? autolinker.link(feature.properties['WADMKC'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Kota</strong><br />' + (feature.properties['WADMKK'] !== null ? autolinker.link(feature.properties['WADMKK'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Provinsi</strong><br />' + (feature.properties['WADMPR'] !== null ? autolinker.link(feature.properties['WADMPR'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Kelas</strong><br />' + (feature.properties['Kelas'] !== null ? autolinker.link(feature.properties['Kelas'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Skor Indeks</strong><br />' + (feature.properties['Skor'] !== null ? autolinker.link(feature.properties['Skor'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Keterangan</strong><br />' + (feature.properties['Ket'] !== null ? autolinker.link(feature.properties['Ket'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_FasilitasKritis_6_0(feature) {
+            switch(String(feature.properties['Kelas'])) {
+                case 'Rendah':
+                    return {
+                pane: 'pane_FasilitasKritis_6',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(146,201,83,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Sedang':
+                    return {
+                pane: 'pane_FasilitasKritis_6',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(242,235,23,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Tinggi':
+                    return {
+                pane: 'pane_FasilitasKritis_6',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(238,31,35,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_FasilitasKritis_6');
+        map.getPane('pane_FasilitasKritis_6').style.zIndex = 406;
+        map.getPane('pane_FasilitasKritis_6').style['mix-blend-mode'] = 'normal';
+        var layer_FasilitasKritis_6 = new L.geoJson(json_FasilitasKritis_6, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_FasilitasKritis_6',
+            layerName: 'layer_FasilitasKritis_6',
+            pane: 'pane_FasilitasKritis_6',
+            onEachFeature: pop_FasilitasKritis_6,
+            style: style_FasilitasKritis_6_0,
+        });
+        bounds_group.addLayer(layer_FasilitasKritis_6);
+        map.addLayer(layer_FasilitasKritis_6);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'Fasilitas Kritis<br /><table><tr><td style="text-align: center;"><img src="legend/FasilitasKritis_6_Rendah0.png" /></td><td>Rendah</td></tr><tr><td style="text-align: center;"><img src="legend/FasilitasKritis_6_Sedang1.png" /></td><td>Sedang</td></tr><tr><td style="text-align: center;"><img src="legend/FasilitasKritis_6_Tinggi2.png" /></td><td>Tinggi</td></tr></table>': layer_FasilitasKritis_6,'Jumlah Bangunan<br /><table><tr><td style="text-align: center;"><img src="legend/JumlahBangunan_5_Rendah0.png" /></td><td>Rendah</td></tr><tr><td style="text-align: center;"><img src="legend/JumlahBangunan_5_Sedang1.png" /></td><td>Sedang</td></tr><tr><td style="text-align: center;"><img src="legend/JumlahBangunan_5_Tinggi2.png" /></td><td>Tinggi</td></tr></table>': layer_JumlahBangunan_5,'Fasilitas Umum<br /><table><tr><td style="text-align: center;"><img src="legend/FasilitasUmum_4_Rendah0.png" /></td><td>Rendah</td></tr><tr><td style="text-align: center;"><img src="legend/FasilitasUmum_4_Sedang1.png" /></td><td>Sedang</td></tr><tr><td style="text-align: center;"><img src="legend/FasilitasUmum_4_Tinggi2.png" /></td><td>Tinggi</td></tr></table>': layer_FasilitasUmum_4,'<img src="legend/BatasAdministrasiDesa_3.png" /> Batas Administrasi Desa': layer_BatasAdministrasiDesa_3,'<img src="legend/BatasAdministrasiKecamatan_2.png" /> Batas Administrasi Kecamatan': layer_BatasAdministrasiKecamatan_2,'<img src="legend/BatasAdministrasiKota_1.png" /> Batas Administrasi Kota': layer_BatasAdministrasiKota_1,"OSM Standard": layer_OSMStandard_0,}).addTo(map);
+        setBounds();
+        var i = 0;
+        layer_BatasAdministrasiKota_1.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['WADMKK'] !== null?String('<div style="color: #000000; font-size: 10pt; font-family: \'MS Shell Dlg 2\', sans-serif;">' + layer.feature.properties['WADMKK']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_BatasAdministrasiKota_1'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        var i = 0;
+        layer_BatasAdministrasiKecamatan_2.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['WADMKC'] !== null?String('<div style="color: #000000; font-size: 10pt; font-family: \'MS Shell Dlg 2\', sans-serif;">' + layer.feature.properties['WADMKC']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_BatasAdministrasiKecamatan_2'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        var i = 0;
+        layer_BatasAdministrasiDesa_3.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['WADMKD'] !== null?String('<div style="color: #000000; font-size: 10pt; font-family: \'MS Shell Dlg 2\', sans-serif;">' + layer.feature.properties['WADMKD']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_BatasAdministrasiDesa_3'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        map.addControl(new L.Control.Search({
+            layer: layer_BatasAdministrasiDesa_3,
+            initial: false,
+            hideMarkerOnCollapse: true,
+            propertyName: 'WADMKD'}));
+        document.getElementsByClassName('search-button')[0].className +=
+         ' fa fa-binoculars';
+        resetLabels([layer_BatasAdministrasiKota_1,layer_BatasAdministrasiKecamatan_2,layer_BatasAdministrasiDesa_3]);
+        map.on("zoomend", function(){
+            resetLabels([layer_BatasAdministrasiKota_1,layer_BatasAdministrasiKecamatan_2,layer_BatasAdministrasiDesa_3]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_BatasAdministrasiKota_1,layer_BatasAdministrasiKecamatan_2,layer_BatasAdministrasiDesa_3]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_BatasAdministrasiKota_1,layer_BatasAdministrasiKecamatan_2,layer_BatasAdministrasiDesa_3]);
+        });
+        </script>
+        <div id="keterangan" style="margin-left: 0; background-color: #f2edd7;">
+        	<h3>Deskripsi</h3>
+        		<p>
+        			Kerentanan (vulnerability) adalah suatu kondisi yang ditentukan oleh faktor  - faktor atau proses – proses fisik, sosial ekonomi, dan lingkungan yang mengakibatkan menurunnya kemampuan dalam menghadapi bahaya (hazard). 
+				<p>a.	Kerentanan Sosial</p>
+				<p>Menurut Peraturan BNPB No.2 Tahun 2012, indikator kerentanan sosial adalah kepadatan penduduk, rasio jenis kelamin, rasio kemiskinan, rasio orang cacat dan rasio kelompok umur.</p>
+				<p>b.	Kerentanan Fisik</p>
+				<p>Menurut Peraturan BNPB No.2 Tahun 2012, indikator kerentanan fisik adalah kepadatan rumah (permanen, semi-permanen, dan non-permanen), ketersediaan bangunan/fasilitas umum, dan ketersediaan fasilitas kritis.</p>
+				<p>Data kepadatan rumah untuk kerentanan fisik pada analisis ini menggunakan data jumlah bangunan yang dipetakan dengan Open Street Map (OSM) data ini merupakan data perkiraan yang menggunakan jumlah bangunan yang diasumsikan untuk memperoleh data kepadatan rumah.</p>
+				<p>c.	Kerentanan Ekonomi</p>
+				<p>Menurut Peraturan BNPB No.2 Tahun 2012, indikator kerentanan ekonomi adalah luas lahan produktif dan PDRB.
+        		</p>
+        </div>
+    </div>
+    	<section class="ket" style="padding:0;">
+    		<div class="bawah" style="padding:0;">
+    			<h5>
+    				© WEBGIS Risiko Bencana Gempa Bumi Kota Palu
+    			</h5>
+    			<h5> Gabriella Trisna Yudhanti | Email: gabriellatrisna@mail.ugm.ac.id </h5>
+    			
+    		</div>
+    	</section>
+	</body>
+</html>
