@@ -1,86 +1,79 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <link rel="stylesheet" href="css/leaflet.css">
         <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
         <link rel="stylesheet" href="css/leaflet-search.css">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Analisis Risiko Bencana Gempa Bumi di Kota Palu</title>
-		<link rel="stylesheet" type="text/css" href="css/style_peta.css">
-		<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Analisis Risiko Bencana Gempa Bumi di Kota Palu</title>
+        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
         <style>
-        html, body, #map {
+        html, body {
             width: 100%;
             height: 100%;
             padding: 0;
             margin: 0;
         }
         </style>
-	</head>
-	<body>
-		
-		<!-- sidebar -->
-		<input type="checkbox" id="check">
-		<div class="sidebar">
-			<ul style="padding-left: 0px">
-				<li><a href="../../index.html">Beranda</a></li>
-				<li><a href="">Peta</a>
-					<div class="sub-menu-1">
-						<ul style="padding-left: 0px">
-							<li><a href="../Risiko/index.html">Peta Risiko</a></li>
-							<li><a href="../Bahaya/index.html">Informasi Data</a></li>
-						</ul>
-					</div>
-				</li>
-				<li><a href="../Halaman Tentang/index.html">Tentang</a></li>
-				<li><a href="../Halaman Kontak/index.html">Kontak</a></li>
-			</ul>
-		</div>
+    </head>
+    <body>
+        
+        <!-- sidebar -->
+        <input type="checkbox" id="check">
+        <div class="sidebar">
+            <ul style="padding-left: 0px">
+                <li><a href="../../../../index.html">Beranda</a></li>
+                <li><a href="">Peta</a>
+                    <div class="sub-menu-1">
+                        <ul style="padding-left: 0px">
+                            <li><a href="../../../Risiko/index.html">Peta Risiko</a></li>
+                            <li><a href="../../../Bahaya/index.html">Informasi Data</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li><a href="../../../Halaman Tentang/index.html">Tentang</a></li>
+                <li><a href="../../../Halaman Kontak/index.html">Kontak</a></li>
+            </ul>
+        </div>
 
-		<!-- untuk bagian header -->
-		<header>
-			<div class="container"></div>
-				<h1>WEBGIS RISIKO BENCANA GEMPA BUMI </h1>
-				<ul>
-					<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap" rel="stylesheet">
-					<li><a href="../../index.html">Beranda</a></li>
-					<li><a style="font-weight: bold;" href="">Peta</a>
-						<div class="sub-menu-1">
-							<ul style="padding-left: 0px; width: 200px">
-								<li><a href="../Risiko/index.html">Peta Risiko</a></li>
-								<li><a href="../Bahaya/index.html">Informasi Data</a></li>
-							</ul>
-						</div>
-					</li>
-					<li><a href="../Halaman Tentang/index.html">Tentang</a></li>
-					<li><a href="../Halaman Kontak/index.html">Kontak</a></li>
-				</ul>
+        <!-- untuk bagian header -->
+        <header>
+            <div class="container"></div>
+                <h1>WEBGIS RISIKO BENCANA GEMPA BUMI </h1>
+                <ul>
+                    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap" rel="stylesheet">
+                    <li><a href="../../../../index.html">Beranda</a></li>
+                    <li><a style="font-weight: bold;" href="">Peta</a>
+                        <div class="sub-menu-1">
+                            <ul style="padding-left: 0px; width: 200px">
+                                <li><a href="../../../Risiko/index.html">Peta Risiko</a></li>
+                                <li><a href="../../../Bahaya/index.html">Informasi Data</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li><a href="../../../Halaman Tentang/index.html">Tentang</a></li>
+                    <li><a href="../../../Halaman Kontak/index.html">Kontak</a></li>
+                </ul>
 
-				<!-- menu mobile -->
-				<label for="check" class="mobile-menu"><i class="fas fa-bars fa-2x"></i></label>
-			</div>
-		</header>
-	<div class="mappage">
-		<div id="layout" style="background-color: #f2edd7;">
-			<h3>Bahaya</h3>
-			<ul><a style="color: #FF6D4D;" href="../Bahaya/index.html">Bahaya/Ancaman</a></ul>
-			<h3>Kerentanan</h3>
-			<ul><a href="../Kerentanan Sosial/index.html">Kerentanan Sosial</a>
-			</ul>
-			<ul><a href="../Kerentanan Fisik/index.html">Kerentanan Fisik</a>
-			</ul>
-			<ul><a href="../Kerentanan Ekonomi/index.html">Kerentanan Ekonomi</a>
-			</ul>
-			<h3>Kapasitas</h3>
-			<ul><a href="../Kapasitas/index.html">Indeks Kapasitas</a></ul>
-		</div>
+                <!-- menu mobile -->
+                <label for="check" class="mobile-menu"><i class="fas fa-bars fa-2x"></i></label>
+            </div>
+        </header>
+    <div class="mappage">
+        <div id="layout" style="background-color: #f2edd7;">
+            <h3>Risiko Bencana</h3>
+            <ul><a href="../Indeks Risiko/index.html">Risiko</a></ul>
+            <ul><a style="color: #FF6D4D;" href="../Indeks Bahaya/index.html">Bahaya</a></ul>
+            <ul><a href="../Indeks Kerentanan/index.html">Kerentanan</a></ul>
+            <ul><a href="../Indeks Kapasitas/index.html">Kapasitas</a></ul>
+        </div>
         <div id="map" style="height: 600px; margin-left:0;margin-right:0;">
             <div class='tableauPlaceholder' id='viz1620306749066' style='position: relative'>
                 <noscript>
@@ -115,12 +108,10 @@
         <div id="keterangan" style="margin-left: 0; background-color: #f2edd7;">
         	<h3>Deskripsi</h3>
         		<p>
-        			Bahaya/Ancaman (hazard) adalah suatu situasi atau kejadian atau peristiwa yang mempunyai potensi dapat menimbulkan kerusakan, kehilangan jiwa manusia, atau kerusakan lingkungan. Menurut Peraturan BNPB No.2 Tahun 2012, indeks bahaya/ancaman bencana disusun berdasarkan dua komponen utama, yaitu kemungkinan terjadinya suatu ancaman dan besaran dampak yang pernah tercatat untuk bencana yang terjadi tersebut.
+        			Penentuan Indeks Risiko Bencana dilakukan dengan menggabungkan nilai indeks bahaya, kerentanan, dan kapasitas. Proses ini dilakukan dengan menggunakan kalkulasi secara spasial sehingga dapat menghasilkan peta risiko dan nilai grid yang dapat dipergunakan dalam menyusun penjelasan peta risiko
         		</p>
-				<p>	
-					Data bahaya/ancaman pada analisis ini menggunakan data Peak Ground Acceleration (PGA) pada kejadian bencana gempa bumi yang terjadi di Palu pada 28 September 2018.
-
-        		</p>
+                <p>
+                    Peta Indeks Bahaya merupakan hasil dari analisis bahaya nilai PGA, dari hasil analisis tersebut kelas bahaya di Kota Palu dibagi menjadi 2, yaitu Tinggi dan Sedang.
         </div>
     </div>
     	<section class="ket" style="padding:0;">
@@ -129,7 +120,6 @@
     				© WEBGIS Risiko Bencana Gempa Bumi Kota Palu
     			</h5>
     			<h5> Gabriella Trisna Yudhanti | Email: gabriellatrisna@mail.ugm.ac.id </h5>
-    			
     		</div>
     	</section>
 	</body>
