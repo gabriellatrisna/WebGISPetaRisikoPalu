@@ -189,4 +189,7 @@ section h1 {
     .mappage {
         grid-template-columns: 1fr;
     }
+    .tableauPlaceholder {
+        max-height: 1500px;
+    }
 }
