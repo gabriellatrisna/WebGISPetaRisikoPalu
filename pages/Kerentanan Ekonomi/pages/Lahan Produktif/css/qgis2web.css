@@ -209,4 +209,7 @@ section h1 {
     .tableauPlaceholder {
         max-height: 1500px;
     }
+    #map .tableauPlaceholder {
+          width: 1100px;
+    }
 }
