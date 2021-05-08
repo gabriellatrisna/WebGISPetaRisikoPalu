@@ -183,6 +183,10 @@ section h1 {
     }
     .ket {
         font-size: 14px;
+        width: 100%;
+    }
+    header {
+    	width: 100%;
     }
     .mappage {
         grid-template-columns: 1fr;
