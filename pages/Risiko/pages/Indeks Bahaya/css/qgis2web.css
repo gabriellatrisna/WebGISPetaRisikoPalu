@@ -185,4 +185,14 @@ section h1 {
     #map .tableauPlaceholder {
           width: 1100px;
     }
+    #keterangan p {
+        font-size: 12px;
+    }
+    #map .tableauPlaceholder {
+          width: 1100px;
+    }
+
+    div ul a{
+        font-size: 16px;
+    }
 }
