@@ -186,13 +186,14 @@ section h1 {
           width: 1100px;
     }
     #keterangan p {
-        font-size: 12px;
+        font-size: 10px;
     }
+
     #map .tableauPlaceholder {
           width: 1100px;
     }
 
     div ul a{
-        font-size: 16px;
+        font-size: 14px;
     }
 }
