@@ -182,7 +182,14 @@ section h1 {
     .mappage {
         grid-template-columns: 1fr;
     }
+    #keterangan p {
+        font-size: 12px;
+    }
     #map .tableauPlaceholder {
           width: 1100px;
+    }
+
+    div ul a{
+        font-size: 16px;
     }
 }
