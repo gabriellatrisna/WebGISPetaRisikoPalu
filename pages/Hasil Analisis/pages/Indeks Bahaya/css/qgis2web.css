@@ -56,6 +56,11 @@ div ul a {
     font-family: 'Quicksand', sans-serif;
     color: #000000;
     transition: .3s;
+}
+.mappage div ul a {
+    font-family: 'Quicksand', sans-serif;
+    color: #000000;
+    transition: .3s;
     font-weight: bold;
 }
 
