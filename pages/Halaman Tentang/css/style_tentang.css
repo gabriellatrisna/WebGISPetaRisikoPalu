@@ -32,6 +32,10 @@ header ul li a:hover {
 a {
 	text-decoration: none;
 }
+
+span {
+	font-style: italic;
+}
 .container {
 	width: 90%;
 	margin: 0 auto;
